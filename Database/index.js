@@ -5,7 +5,4 @@ export default {
   courses,
   modules,
   assignments,
-  // users,
-  // grades,
-  // enrollments,
 };
