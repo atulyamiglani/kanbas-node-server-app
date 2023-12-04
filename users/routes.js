@@ -16,34 +16,50 @@ function UserRoutes(app) {
     res.json(users);
   };
   const findUserById = async (req, res) => {
-    const user = await dao.findUserById(req.params.userId);
-    res.json(user);
+    try {
+      const user = await dao.findUserById(req.params.userId);
+      res.json(user);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const updateUser = async (req, res) => {
-    const { userId } = req.params;
-    const status = await dao.updateUser(userId, req.body);
-    const currentUser = await dao.findUserById(userId);
-    req.session["currentUser"] = currentUser;
-    res.json(status);
+    try {
+      const { userId } = req.params;
+      const status = await dao.updateUser(userId, req.body);
+      const currentUser = await dao.findUserById(userId);
+      req.session["currentUser"] = currentUser;
+      res.json(status);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const signup = async (req, res) => {
-    const user = await dao.findUserByUsername(req.body.username);
-    if (user) {
-      res.status(400).json({ message: "Username already taken" });
+    try {
+      const user = await dao.findUserByUsername(req.body.username);
+      if (user) {
+        res.status(400).json({ message: "Username already taken" });
+      }
+      const currentUser = await dao.createUser(req.body);
+      req.session["currentUser"] = currentUser;
+      res.json(currentUser);
+    } catch (error) {
+      console.log(error);
     }
-    const currentUser = await dao.createUser(req.body);
-    req.session["currentUser"] = currentUser;
-    res.json(currentUser);
   };
 
   const signin = async (req, res) => {
-    const { username, password } = req.body;
-    const currentUser = await dao.findUserByCredentials(username, password);
-    req.session["currentUser"] = currentUser;
-    console.log("dao", currentUser);
-    res.json(currentUser);
+    try {
+      const { username, password } = req.body;
+      const currentUser = await dao.findUserByCredentials(username, password);
+      req.session["currentUser"] = currentUser;
+      console.log("dao", currentUser);
+      res.json(currentUser);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const signout = (req, res) => {
