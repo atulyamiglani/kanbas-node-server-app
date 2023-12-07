@@ -44,6 +44,7 @@ function UserRoutes(app) {
       }
       const currentUser = await dao.createUser(req.body);
       req.session["currentUser"] = currentUser;
+      console.log("user", currentUser);
       res.json(currentUser);
     } catch (error) {
       console.log(error);
