@@ -16,7 +16,7 @@ const CONNECTION_STRING =
 mongoose.connect(CONNECTION_STRING);
 const app = express();
 app.use(express.json());
-app.use(cors({ credentials: true, origin: process.env.FRONTEND_URL }));
+app.use(cors({ credentials: true, origin: "*" }));
 const sessionOptions = {
   secret: "any string",
   resave: false,
